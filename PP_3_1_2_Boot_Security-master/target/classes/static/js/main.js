@@ -1,4 +1,4 @@
-const globalurl = "http://localhost:8080/api/admin";
+const globalurl = "http://localhost:8080/api/users";
 
 
 
@@ -14,8 +14,8 @@ function sendRecuest(method , url , bady = null ){
         console.log(xhr.response);
     }
 
-    xhr.send( JSON.stringify( bady));
 
+    xhr.send( JSON.stringify( bady));
 }
 
 
