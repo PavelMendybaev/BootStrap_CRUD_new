@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="/styles/style.css">
+  <title>Menu</title>
+</head>
+<body>
+
+
+
+
+
+
+<div class="bg-dark text-light container-fluid">
+  <h2  th:text="${myUser.getUsername() +  myUser.getAuthorities()}"> </h2>
+</div>
+
+
+
+
+
+
+
+<div class="row">
+  <div class="bg-light container-fluid col-2">
+    <div class="left-men">
+      <a th:href="@{/admin}"><input class="btn-primary button-left" type="button" style="text-decoration: none" value="ADMIN"/></a>
+      <a th:href="@{/user/users}"><input class="btn-primary button-left" type="button" style="text-decoration: none" value="USER"/></a>
+    </div>
+  </div>
+
+  <div class="col container-fluid">
+
+    <div th:insert="admin/shapka :: admin_panel">
+
+    </div>
+
+    <div >
+
+
+
+      <div th:class="container-fluid" >
+        <div class="container">
+          <h2><a th:href="@{/admin}">users</a> &nbsp;&nbsp;&nbsp;<a th:href="@{/admin/add}">add user</a></h2>
+        </div>
+
+        <table class="table">
+          <thead>
+          <tr>
+            <td>ID</td>
+            <td>name</td>
+            <td>roles</td>
+            <td>edit</td>
+            <td>delete</td>
+          </tr>
+          </thead>
+          <tbody>
+          <th:block th:each="user : ${users}">
+            <tr>
+              <td><h5 th:text="${user.getId()}"></h5></td>
+              <td><h5 th:text="${user.getName()}"></h5></td>
+              <td><h5 th:text="${user.getRole()}"></h5></td>
+              <td><a th:href="@{/admin/edit/{id}(id = ${user.getId()})}"><input class="btn-primary" type="button" style="text-decoration: none" value="edit"/></a></td>
+              <td><a th:href="@{/admin/delete/{id}(id = ${user.getId()})}"><input class="btn-primary" type="button" style="text-decoration: none" value="deleted"/></a></td>
+            </tr>
+          </th:block>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="editDiv">
+  <div class="modal-window">
+    <h1>Edit User</h1>
+    <form th:action="@{/admin/edit/{id}(id = ${id_user})}"  th:method="POST" >
+      <div>
+        <h5>name</h5>
+        <input  type="text" th:name="username"  />
+      </div>
+
+      <div>
+        <h5>password</h5>
+        <input  type="text" th:name="password"  />
+      </div>
+      <div>
+        <h5>roles</h5>
+        <input  type="text" th:name="role"  />
+      </div>
+      <br/>
+      <div><input type="submit" value="save"/></div>
+      <a th:href="@{/admin}">canel</a>
+    </form>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>
