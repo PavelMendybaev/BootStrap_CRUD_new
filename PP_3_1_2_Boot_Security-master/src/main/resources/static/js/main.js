@@ -6,22 +6,45 @@ const delurl = "http://localhost:8080/api/users/del";
 function click_addUsers(){
     document.getElementById("content").style.display = 'none';
     document.getElementById("add_user").style.display = '';
+
+    tableUpdate(data);
 }
 
 function click_users(){
     document.getElementById("content").style.display = '';
     document.getElementById("add_user").style.display = 'none';
+    tableUpdate(sendRecuest('GET' , globalurl ));
 }
 
+function click_save(){
+
+    let body = {
+        login : document.getElementById("inp_name").value,
+        password: document.getElementById("inp_pass").value,
+        role: document.getElementById("inp_role").value
+    }
+
+    let data = sendRecuest("POST", globalurl, body);
+    tableUpdate(sendRecuest('GET' , globalurl ));
+    alert("пользователь добален");
+}
+
+function click_admin(){
 
 
+}
+
+function click_user() {
+
+
+}
 
 
 function tableUpdate(promise){
 
     promise.then( data => {
         table = document.getElementById("table");
-
+        console.log(data);
 
         while (table.rows[0]) {
             table.deleteRow(0);

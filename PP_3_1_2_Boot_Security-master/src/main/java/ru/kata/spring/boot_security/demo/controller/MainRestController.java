@@ -57,11 +57,14 @@ public class MainRestController {
 
             JsonNode jsonNode = mapper.readTree(strUser);
             user.setName(jsonNode.get("login").asText());
+            user.setPassword(passwordEncoder.encode(jsonNode.get("password").asText()));
+            user.setRole(Role.valueOf(jsonNode.get("role").asText()));
             userService.save(user);
 
         }catch (Exception e){
             System.out.println("не вверный формат");
         }
+
         return userService.users();
     }
 
