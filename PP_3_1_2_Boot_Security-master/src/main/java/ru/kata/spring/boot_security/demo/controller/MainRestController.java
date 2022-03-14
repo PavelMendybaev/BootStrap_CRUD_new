@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -40,6 +41,7 @@ public class MainRestController {
     public List<User> showUsers(){
         return userService.users();
     }
+
     @GetMapping("/users/{id}")
     public User showUser(@PathVariable("id") Long id){
         return userService.getUserById(id);
@@ -60,11 +62,37 @@ public class MainRestController {
         }catch (Exception e){
             System.out.println("не вверный формат");
         }
-
-
-
-
-
         return userService.users();
     }
+
+    @PostMapping("/users/edit/{id}")
+    public List<User> editUser(@RequestBody String strUser, @PathVariable Long id) {
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+
+            User user = userService.getUserById(id);
+            JsonNode jsonNode = mapper.readTree(strUser);
+
+            user.setName(jsonNode.get("login").asText());
+            user.setPassword(passwordEncoder.encode(jsonNode.get("password").asText()));
+            user.setRole(Role.valueOf(jsonNode.get("role").asText()));
+            userService.save(user);
+
+        }catch (Exception e){
+            System.out.println("не вверный формат");
+        }
+        return userService.users();
+    }
+
+
+    @PostMapping("/users/del/{id}")
+    public List<User> delUser(@PathVariable Long id) {
+        userService.deleteById(id);
+        return userService.users();
+    }
+
+
+
 }

@@ -157,7 +157,6 @@ public class MainController {
         return "admin";
     }
 
-
     @GetMapping(value = "/admin/delete/{id}" )
     public String getDelete(@PathVariable("id") Long id,ModelMap model){
         userService.deleteById(id);
@@ -181,9 +180,7 @@ public class MainController {
         model.addAttribute("myUser" , myUser);
         model.addAttribute("users", users);
         return "rest/restUsers";
-
     }
-
 
 
 }

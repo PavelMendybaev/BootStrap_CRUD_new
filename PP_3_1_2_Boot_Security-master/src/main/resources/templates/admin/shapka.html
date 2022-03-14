@@ -21,3 +21,24 @@
     </div>
 </div>
 
+
+<div th:fragment="add_user">
+    <div>
+        <form th:action="@{/admin/add}" th:method="POST">
+
+            <div><label>
+                <input placeholder="login"  type="text" th:name="username"/>
+            </label></div>
+            <div><label>
+                <input placeholder="password" type="text" th:name="password"/>
+            </label></div>
+            <div><label>
+                <input placeholder="role" type="text" th:name="role"/>
+            </label></div>
+            <br/>
+            <div><input type="submit" value="Add user"/></div>
+        </form>
+
+    </div>
+</div>
+

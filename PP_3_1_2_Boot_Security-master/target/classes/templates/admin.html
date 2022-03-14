@@ -26,22 +26,19 @@
         </div>
     </div>
 
-    <div class="col container-fluid">
+    <div  class="col container-fluid">
 
         <div th:insert="admin/shapka :: admin_panel">
 
         </div>
-
         <div >
-
-
 
             <div class="container-fluid" >
                 <div class="container">
-                    <h2><a th:href="@{/admin}">users</a> &nbsp;&nbsp;&nbsp;<a th:href="@{/admin/add}">add user</a></h2>
+                    <h2><a  onclick="click_users();">users</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="click_addUsers();">add user</a></h2>
                 </div>
 
-                <table class="table">
+                <table id = "content" class="table">
                     <thead>
                     <tr>
                         <td>ID</td>
@@ -51,14 +48,9 @@
                         <td>delete</td>
                     </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>dasd</td>
-                            <td>dasd</td>
-                            <td>dasd</td>
-                            <td><input type="button" value="edit"></td>
-                            <td>dasd</td>
-                        </tr>
+                    <tbody id = "table">
+
+
                     </tbody>
                 </table>
 
@@ -66,11 +58,9 @@
 
             </div>
 
+            <div style="display: none" id = "add_user" th:insert="admin/shapka :: add_user">
+
         </div>
-
-
-
-
 
     </div>
 </div>
