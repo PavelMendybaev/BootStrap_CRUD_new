@@ -90,7 +90,7 @@ function tableUpdate(promise){
                 let tdEdit = document.createElement("td");
                 let edit_but = document.createElement("button");
                 edit_but.textContent = "edit";
-
+                edit_but.className = "btn-primary"
                 edit_but.onclick = function () {
                     edit_user(data[i].id)
                 }
@@ -101,6 +101,7 @@ function tableUpdate(promise){
                 let tdDel = document.createElement("td");
                 let Del_but = document.createElement("button");
                 Del_but.textContent = "delete";
+                Del_but.className = "btn-primary";
                 Del_but.onclick = function () {
                     data = sendRecuest("POST", delurl + "/" + data[i].id);
                     tableUpdate(data);

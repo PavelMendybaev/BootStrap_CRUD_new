@@ -41,6 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
                 .antMatchers( HttpMethod.GET , "/user/**").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
+                .antMatchers( HttpMethod.GET , "/styles/**").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
+                .antMatchers( HttpMethod.GET , "/js/**").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
+                .antMatchers( HttpMethod.GET , "/api/**").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
 
                 .antMatchers( HttpMethod.GET , "/**").hasAuthority(Permission.DEVELOPERS_WRITE.getPermission())
                 .antMatchers( HttpMethod.POST , "/**").hasAuthority(Permission.DEVELOPERS_WRITE.getPermission())
