@@ -21,24 +21,23 @@
 <div class="row">
     <div class="bg-light container-fluid col-2">
         <div class="left-men">
-            <a th:href="@{/admin}"><input class="btn-primary button-left" type="button" style="text-decoration: none" value="ADMIN"/></a>
-            <a th:href="@{/user/users}"><input class="btn-primary button-left" type="button" style="text-decoration: none" value="USER"/></a>
+            <button onclick="click_admin();" class="btn-primary button-left" type="button" style="text-decoration: none">ADMIN</button>
+            <button onclick="click_user();" class="btn-primary button-left" type="button" style="text-decoration: none" value="USER">USER</button>
         </div>
     </div>
 
+
+
     <div  class="col container-fluid">
 
-        <div th:insert="admin/shapka :: admin_panel">
-
-        </div>
-        <div >
-
-            <div class="container-fluid" >
+        <div id = "admin_content">
+            <div id="right_content" class="container-fluid">
+                <h1>Admin Panel</h1>
                 <div class="container">
-                    <h2><a  onclick="click_users();">users</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="click_addUsers();">add user</a></h2>
+                    <h2><a onclick="click_users();">users</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+                            onclick="click_addUsers();">add user</a></h2>
                 </div>
-
-                <table id = "content" class="table">
+                <table id="content" class="table">
                     <thead>
                     <tr>
                         <td>ID</td>
@@ -48,22 +47,40 @@
                         <td>delete</td>
                     </tr>
                     </thead>
-                    <tbody id = "table">
-
-
+                    <tbody id="table">
                     </tbody>
                 </table>
-
-
-
+                <div style="display: none" id="add_user" th:insert="admin/shapka :: add_user"></div>
             </div>
+        </div>
 
-            <div style="display: none" id = "add_user" th:insert="admin/shapka :: add_user">
+        <div style="display: none" id = "user_content">
 
+            <div  class="container-fluid">
+                <h1>user Panel</h1>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>name</td>
+                        <td>roles</td>
+                    </tr>
+                    </thead>
+                    <tbody id="user_table">
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
+
+
+
+
+
+
 </div>
+
 
 <script src = "/js/main.js"></script>
 

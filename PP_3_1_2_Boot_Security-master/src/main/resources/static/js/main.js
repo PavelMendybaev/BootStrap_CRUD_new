@@ -30,11 +30,17 @@ function click_save(){
 }
 
 function click_admin(){
-
-
+    div = document.getElementById("user_content");
+    div.style.display = 'none';
+    div = document.getElementById("admin_content");
+    div.style.display = '';
 }
 
 function click_user() {
+    div = document.getElementById("user_content");
+    div.style.display = '';
+    div = document.getElementById("admin_content");
+    div.style.display = 'none';
 
 
 }
@@ -44,52 +50,78 @@ function tableUpdate(promise){
 
     promise.then( data => {
         table = document.getElementById("table");
-        console.log(data);
+        user_table = document.getElementById("user_table");
 
-        while (table.rows[0]) {
-            table.deleteRow(0);
-        }
+        if(table) {
 
-        for (let i in data) {
-            tr = document.createElement("tr");
+            console.log(data);
 
-            tdId = document.createElement("td");
-            tdId.textContent = data[i].id;
-
-            tdName = document.createElement("td");
-            tdName.textContent = data[i].name;
-
-            tdRole = document.createElement("td");
-            tdRole.textContent = data[i].role;
-
-            tdEdit = document.createElement("td");
-            edit_but = document.createElement("button");
-            edit_but.textContent = "edit";
-            edit_but.onclick = function (){
-                edit_user(data[i].id)
+            while (table.rows[0]) {
+                table.deleteRow(0);
             }
 
-            tdEdit.appendChild(edit_but);
-
-
-            tdDel = document.createElement("td");
-            Del_but = document.createElement("button");
-            Del_but.textContent = "delete";
-            Del_but.onclick = function (){
-                data = sendRecuest("POST", delurl + "/" + data[i].id);
-                tableUpdate(data);
+            while (user_table.rows[0]) {
+                user_table.deleteRow(0);
             }
-            tdDel.appendChild(Del_but);
 
-            tr.appendChild(tdId);
-            tr.appendChild(tdName);
-            tr.appendChild(tdRole)
-            tr.appendChild(tdEdit)
-            tr.appendChild(tdDel)
+            for (let i in data) {
+                let tr = document.createElement("tr");
+                let user_tr = document.createElement("tr");
+
+                let tdId = document.createElement("td");
+                tdId.textContent = data[i].id;
+
+                let user_tdId = document.createElement("td");
+                user_tdId.textContent = data[i].id;
 
 
-            table.appendChild(tr);
-            console.log(i)
+                let tdName = document.createElement("td");
+                tdName.textContent = data[i].name;
+
+                let user_tdName = document.createElement("td");
+                user_tdName.textContent = data[i].name;
+
+                let tdRole = document.createElement("td");
+                tdRole.textContent = data[i].role;
+
+                let user_tdRole = document.createElement("td");
+                user_tdRole.textContent = data[i].role;
+
+                let tdEdit = document.createElement("td");
+                let edit_but = document.createElement("button");
+                edit_but.textContent = "edit";
+
+                edit_but.onclick = function () {
+                    edit_user(data[i].id)
+                }
+
+                tdEdit.appendChild(edit_but);
+
+
+                let tdDel = document.createElement("td");
+                let Del_but = document.createElement("button");
+                Del_but.textContent = "delete";
+                Del_but.onclick = function () {
+                    data = sendRecuest("POST", delurl + "/" + data[i].id);
+                    tableUpdate(data);
+                }
+                tdDel.appendChild(Del_but);
+
+                tr.appendChild(tdId);
+                tr.appendChild(tdName);
+                tr.appendChild(tdRole)
+                tr.appendChild(tdEdit)
+                tr.appendChild(tdDel)
+
+                user_tr.appendChild(user_tdId);
+                user_tr.appendChild(user_tdName);
+                user_tr.appendChild(user_tdRole)
+
+                table.appendChild(tr);
+
+                user_table.appendChild(user_tr);
+
+            }
         }
 
     });
