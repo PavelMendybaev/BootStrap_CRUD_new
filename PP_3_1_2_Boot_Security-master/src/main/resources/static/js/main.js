@@ -6,8 +6,8 @@ const delurl = "http://localhost:8080/api/users/del";
 function click_addUsers(){
     document.getElementById("content").style.display = 'none';
     document.getElementById("add_user").style.display = '';
+    tableUpdate(sendRecuest('GET' , globalurl ));
 
-    tableUpdate(data);
 }
 
 function click_users(){
@@ -130,83 +130,89 @@ function tableUpdate(promise){
 }
 
 
-
 function edit_user(id){
 
-    let div = document.createElement("div");
-    div.className = "editDiv";
+    permise = sendRecuest("GET" , globalurl+"/"+id);
+    permise.then(data => {
+        let div = document.createElement("div");
+        div.className = "editDiv";
 
-    let wind = document.createElement("div");
-    wind.className = "modal-window";
+        let wind = document.createElement("div");
+        wind.className = "modal-window";
 
-    let title = document.createElement("h1");
-    title.textContent = "Edit user";
+        let title = document.createElement("h1");
+        title.textContent = "Edit user";
 
-    let close_but = document.createElement("button");
-    close_but.textContent = "Close";
-    close_but.onclick = function (){
-        div.remove();
-    }
-
-    let div_name = document.createElement("div");
-    let label_name = document.createElement("h5");
-    label_name.textContent = "name";
-    let input_name = document.createElement("input");
-
-    div_name.appendChild(label_name)
-    div_name.appendChild(input_name)
-
-
-    let div_pass = document.createElement("div");
-    let label_pass = document.createElement("h5");
-    label_pass.textContent = "password";
-    let input_pass = document.createElement("input");
-    input_pass.type = "password";
-
-    div_pass.appendChild(label_pass)
-    div_pass.appendChild(input_pass)
-
-
-    let div_role = document.createElement("div");
-    let label_role = document.createElement("h5");
-    label_role.textContent = "role";
-    let input_role = document.createElement("input");
-
-    div_role.appendChild(label_role)
-    div_role.appendChild(input_role)
-
-
-    let save_but = document.createElement("button");
-    save_but.textContent = "save";
-    save_but.onclick = function (){
-
-        body = {
-            login : input_name.value ,
-            password : input_pass.value,
-            role : input_role.value
+        let close_but = document.createElement("button");
+        close_but.textContent = "Close";
+        close_but.className = "btn-primary";
+        close_but.onclick = function (){
+            div.remove();
         }
 
-        data = sendRecuest(
-            "POST" ,
-            editurl + "/" + id,
-            body);
 
-        tableUpdate(data);
+        let div_name = document.createElement("div");
+        let label_name = document.createElement("h5");
+        label_name.textContent = "name";
+        let input_name = document.createElement("input");
+        input_name.value = data.name;
+
+        div_name.appendChild(label_name)
+        div_name.appendChild(input_name)
 
 
-    }
+        let div_pass = document.createElement("div");
+        let label_pass = document.createElement("h5");
+        label_pass.textContent = "password";
+        let input_pass = document.createElement("input");
+        input_pass.type = "password";
 
-    wind.appendChild(title);
-    wind.appendChild(div_name);
-    wind.appendChild(div_pass);
-    wind.appendChild(div_role);
-    wind.appendChild(document.createElement("br"))
-    wind.appendChild(save_but);
-    wind.appendChild(document.createElement("br"))
-    wind.appendChild(close_but);
+        div_pass.appendChild(label_pass)
+        div_pass.appendChild(input_pass)
 
-    div.appendChild(wind);
-    document.body.appendChild(div);
+
+        let div_role = document.createElement("div");
+        let label_role = document.createElement("h5");
+        label_role.textContent = "role";
+        let input_role = document.createElement("input");
+        input_role.value = data.role;
+        div_role.appendChild(label_role)
+        div_role.appendChild(input_role)
+
+
+        let save_but = document.createElement("button");
+        save_but.className = "btn-primary";
+        save_but.textContent = "save";
+        save_but.onclick = function (){
+
+            body = {
+                login : input_name.value ,
+                password : input_pass.value,
+                role : input_role.value
+            }
+
+            data = sendRecuest(
+                "POST" ,
+                editurl + "/" + id,
+                body);
+
+            tableUpdate(data);
+
+
+        }
+
+        wind.appendChild(title);
+        wind.appendChild(div_name);
+        wind.appendChild(div_pass);
+        wind.appendChild(div_role);
+        wind.appendChild(document.createElement("br"))
+        wind.appendChild(save_but);
+        wind.appendChild(document.createElement("br"))
+        wind.appendChild(close_but);
+
+        div.appendChild(wind);
+        document.body.appendChild(div);
+    })
 }
 
 
