@@ -51,43 +51,26 @@ public class MainRestController {
 
 
     @PostMapping("/users")
-    public  ResponseEntity<List<User>> createUser(@RequestBody String strUser) {
+    public  ResponseEntity<List<User>> createUser(@RequestBody User user) {
 
-        ObjectMapper mapper = new ObjectMapper();
-        try{
-            User user = new User();
 
-            JsonNode jsonNode = mapper.readTree(strUser);
-            user.setName(jsonNode.get("login").asText());
-            user.setPassword(passwordEncoder.encode(jsonNode.get("password").asText()));
-            user.setRole(Role.valueOf(jsonNode.get("role").asText()));
-            userService.save(user);
-
-        }catch (Exception e){
-            System.out.println("не вверный формат");
-        }
+        userService.save(user);
 
         return new ResponseEntity<>( userService.users() , HttpStatus.OK);
     }
 
     @PostMapping("/users/edit/{id}")
-    public  ResponseEntity<List<User>> editUser(@RequestBody String strUser, @PathVariable Long id) {
+    public  ResponseEntity<List<User>> editUser(@RequestBody User user , @PathVariable Long id) {
 
 
-        ObjectMapper mapper = new ObjectMapper();
-        try{
+        User editUser = userService.getUserById(id);
 
-            User user = userService.getUserById(id);
-            JsonNode jsonNode = mapper.readTree(strUser);
 
-            user.setName(jsonNode.get("login").asText());
-            user.setPassword(passwordEncoder.encode(jsonNode.get("password").asText()));
-            user.setRole(Role.valueOf(jsonNode.get("role").asText()));
-            userService.save(user);
+        editUser.setName(user.getName());
+        editUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        editUser.setRole(user.getRole());
+        userService.save(editUser);
 
-        }catch (Exception e){
-            System.out.println("не вверный формат");
-        }
         return new ResponseEntity<>( userService.users() , HttpStatus.OK);
     }
 

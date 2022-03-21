@@ -19,7 +19,7 @@ function click_users(){
 function click_save(){
 
     let body = {
-        login : document.getElementById("inp_name").value,
+        name: document.getElementById("inp_name").value,
         password: document.getElementById("inp_pass").value,
         role: document.getElementById("inp_role").value
     }
@@ -186,7 +186,7 @@ function edit_user(id){
         save_but.onclick = function (){
 
             body = {
-                login : input_name.value ,
+                name : input_name.value ,
                 password : input_pass.value,
                 role : input_role.value
             }
