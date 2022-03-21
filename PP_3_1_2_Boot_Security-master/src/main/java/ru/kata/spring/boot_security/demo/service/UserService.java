@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Service
-public class UserService {
+public class UserService implements UserServiveIterface {
 
     private final UserRepository userRepository;
 
@@ -18,18 +18,19 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Override
     public void save(User user){
         userRepository.save(user);
     }
-
+    @Override
     public List<User> users(){
         return userRepository.users();
     }
-
+    @Override
     public User getUserById(Long id){
         return userRepository.getUserById(id);
     }
-
+    @Override
     public void deleteById(Long id){
         userRepository.deleteById(id);
     }

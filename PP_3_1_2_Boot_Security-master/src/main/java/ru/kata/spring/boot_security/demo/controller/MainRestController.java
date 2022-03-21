@@ -13,6 +13,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -38,18 +40,18 @@ public class MainRestController {
     }
 
     @GetMapping(value = "/users" )
-    public List<User> showUsers(){
-        return userService.users();
+    public ResponseEntity<List<User>> showUsers(){
+        return new ResponseEntity<>( userService.users() , HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
-    public User showUser(@PathVariable("id") Long id){
-        return userService.getUserById(id);
+    public ResponseEntity<User> showUser(@PathVariable("id") Long id){
+        return new ResponseEntity<>( userService.getUserById(id) , HttpStatus.OK);
     }
 
 
     @PostMapping("/users")
-    public List<User> createUser(@RequestBody String strUser) {
+    public  ResponseEntity<List<User>> createUser(@RequestBody String strUser) {
 
         ObjectMapper mapper = new ObjectMapper();
         try{
@@ -65,11 +67,11 @@ public class MainRestController {
             System.out.println("не вверный формат");
         }
 
-        return userService.users();
+        return new ResponseEntity<>( userService.users() , HttpStatus.OK);
     }
 
     @PostMapping("/users/edit/{id}")
-    public List<User> editUser(@RequestBody String strUser, @PathVariable Long id) {
+    public  ResponseEntity<List<User>> editUser(@RequestBody String strUser, @PathVariable Long id) {
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -86,14 +88,15 @@ public class MainRestController {
         }catch (Exception e){
             System.out.println("не вверный формат");
         }
-        return userService.users();
+        return new ResponseEntity<>( userService.users() , HttpStatus.OK);
     }
 
 
     @PostMapping("/users/del/{id}")
-    public List<User> delUser(@PathVariable Long id) {
+    public ResponseEntity<List<User>> delUser(@PathVariable Long id) {
         userService.deleteById(id);
-        return userService.users();
+
+        return new ResponseEntity<>( userService.users() , HttpStatus.OK);
     }
 
 

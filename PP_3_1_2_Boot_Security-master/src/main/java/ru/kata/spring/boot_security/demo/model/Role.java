@@ -11,7 +11,9 @@ import static java.util.Set.*;
 
 public enum Role {
     USER(of(Permission.DEVELOPERS_READ)),
-    ADMIN(of(Permission.DEVELOPERS_WRITE , Permission.DEVELOPERS_READ));
+    ADMIN(of(Permission.DEVELOPERS_WRITE , Permission.DEVELOPERS_READ)),
+    PRO(of(Permission.DEVELOPERS_WRITE , Permission.DEVELOPERS_READ)),
+    NOOB(of(Permission.DEVELOPERS_READ));
 
     private final Set<Permission> permissions;
 
