@@ -1,9 +1,5 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -51,6 +47,7 @@ public class MainRestController {
 
     @PostMapping("/users")
     public  ResponseEntity<List<User>> createUser(@RequestBody User user) {
+        System.out.println(user.getRoles());
 
         userService.save(user);
 
@@ -59,8 +56,6 @@ public class MainRestController {
 
     @PostMapping("/users/edit/{id}")
     public  ResponseEntity<List<User>> editUser(@RequestBody User user , @PathVariable Long id) {
-
-
         User editUser = userService.getUserById(id);
 
 
@@ -83,11 +78,13 @@ public class MainRestController {
     ResponseEntity<List<Role>>getAllRoles(){
         return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
+    @PostMapping("/roles")
+    void AddRoles(@PathVariable Role role){
+
+    }
+
     @GetMapping("/roles/{id}")
     ResponseEntity<Role> getRoleById(@PathVariable("id") Long id){
         return new ResponseEntity<>(roleService.getRole(id), HttpStatus.OK);
     }
-
-
-
 }

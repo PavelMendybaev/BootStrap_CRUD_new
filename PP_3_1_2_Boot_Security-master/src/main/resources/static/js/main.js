@@ -21,10 +21,13 @@ function click_save(){
     let body = {
         name: document.getElementById("inp_name").value,
         password: document.getElementById("inp_pass").value,
-        // role: document.getElementById("inp_role").value
     }
 
+    // roles: document.getElementById("inp_role").value
+
     let data = sendRecuest("POST", globalurl, body);
+    
+
     tableUpdate(sendRecuest('GET' , globalurl ));
     alert("пользователь добален");
 }
@@ -82,10 +85,24 @@ function tableUpdate(promise){
                 user_tdName.textContent = data[i].name;
 
                 let tdRole = document.createElement("td");
-                tdRole.textContent = data[i].role;
+
+                for (let j in data[i].roles){
+                    if (data[i].roles[j].id === 1){
+                        tdRole.textContent += "ADMIN";
+                    }
+                    else {
+                        tdRole.textContent += "EROR";
+                    }
+                }
+
+
+
+
+
+
 
                 let user_tdRole = document.createElement("td");
-                user_tdRole.textContent = data[i].role;
+                user_tdRole.textContent += data[i].role;
 
                 let tdEdit = document.createElement("td");
                 let edit_but = document.createElement("button");

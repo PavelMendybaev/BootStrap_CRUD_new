@@ -28,6 +28,7 @@ public class UserService implements UserServiveIterface , UserDetailsService {
     public void save(User user){
         userRepository.save(user);
     }
+
     @Override
     public List<User> users(){
         return userDAO.getAllUsers();
