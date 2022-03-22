@@ -1,34 +1,88 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static java.util.Set.*;
-
-
-public enum Role {
-    USER(of(Permission.DEVELOPERS_READ)),
-    ADMIN(of(Permission.DEVELOPERS_WRITE , Permission.DEVELOPERS_READ)),
-    PRO(of(Permission.DEVELOPERS_WRITE , Permission.DEVELOPERS_READ)),
-    NOOB(of(Permission.DEVELOPERS_READ));
-
-    private final Set<Permission> permissions;
+@Entity
+@Table(name = "role")
+public class Role implements GrantedAuthority {
 
 
-    Role(Set<Permission> permissions) {
-        this.permissions = permissions;
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "role", unique = true)
+    private String role;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
+
+    public Role() {}
+
+
+    public Role(EnumRoles standartRole){
+        this.role = standartRole.name();
     }
 
-    public Set<Permission> getPermissions() {
-        return permissions;
+    public Role(Long id, String role) {
+        this.id = id;
+        this.role = role;
     }
 
-    public Set<SimpleGrantedAuthority> getAuthorites(){
-        return getPermissions().stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .collect(Collectors.toSet());
+
+    public void addUserToRole(User user){
+        users.add(user);
+    }
+
+    public void addUsersToRole(User ... user){
+        users.addAll(Arrays.asList(user));
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+
+    @Override
+    @JsonIgnore
+    public String getAuthority() {
+        return role;
+    }
+
+    @Override
+    public String toString() {
+        return role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role1 = (Role) o;
+        return Objects.equals(role, role1.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(role);
     }
 }

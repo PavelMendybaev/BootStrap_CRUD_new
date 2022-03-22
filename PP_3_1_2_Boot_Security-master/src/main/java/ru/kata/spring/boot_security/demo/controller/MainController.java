@@ -22,18 +22,8 @@ import java.util.List;
 
 public class MainController {
 
-    private final UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
 
-
-
-    @Autowired
-    public MainController(UserService userService) {
-        this.userService = userService;
-    }
 
 
     @GetMapping(value = "/")

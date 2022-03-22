@@ -4,13 +4,6 @@ package ru.kata.spring.boot_security.demo.controller;
 
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
-
-
-import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -19,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 
@@ -29,15 +24,19 @@ import java.util.List;
 @RequestMapping("/api")
 public class MainRestController {
 
+
+
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public MainRestController(UserService userService) {
+    public MainRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
+
 
     @GetMapping(value = "/users" )
     public ResponseEntity<List<User>> showUsers(){
@@ -53,7 +52,6 @@ public class MainRestController {
     @PostMapping("/users")
     public  ResponseEntity<List<User>> createUser(@RequestBody User user) {
 
-
         userService.save(user);
 
         return new ResponseEntity<>( userService.users() , HttpStatus.OK);
@@ -68,8 +66,8 @@ public class MainRestController {
 
         editUser.setName(user.getName());
         editUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        editUser.setRole(user.getRole());
-        userService.save(editUser);
+        editUser.setRoles(user.getRoles());
+        userService.save(user);
 
         return new ResponseEntity<>( userService.users() , HttpStatus.OK);
     }
@@ -80,6 +78,14 @@ public class MainRestController {
         userService.deleteById(id);
 
         return new ResponseEntity<>( userService.users() , HttpStatus.OK);
+    }
+    @GetMapping("/roles")
+    ResponseEntity<List<Role>>getAllRoles(){
+        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+    }
+    @GetMapping("/roles/{id}")
+    ResponseEntity<Role> getRoleById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(roleService.getRole(id), HttpStatus.OK);
     }
 
 

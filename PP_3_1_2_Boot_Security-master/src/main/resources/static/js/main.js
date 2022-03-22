@@ -1,7 +1,7 @@
 const globalurl = "http://localhost:8080/api/users";
 const editurl = "http://localhost:8080/api/users/edit";
 const delurl = "http://localhost:8080/api/users/del";
-
+const roleurl = "http://localhost:8080/api/users/roles";
 
 function click_addUsers(){
     document.getElementById("content").style.display = 'none';
@@ -21,7 +21,7 @@ function click_save(){
     let body = {
         name: document.getElementById("inp_name").value,
         password: document.getElementById("inp_pass").value,
-        role: document.getElementById("inp_role").value
+        // role: document.getElementById("inp_role").value
     }
 
     let data = sendRecuest("POST", globalurl, body);

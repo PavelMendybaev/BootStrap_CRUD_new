@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.demo.model.Permission;
+
 
 @Configuration
 @EnableWebSecurity
@@ -28,8 +28,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    public WebSecurityConfig(@Qualifier("userDetailsService") UserDetailsService userDetailsService) {
+    public WebSecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
+
+
     }
 
 
@@ -40,14 +42,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
-                .antMatchers( HttpMethod.GET , "/user/**").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
-                .antMatchers( HttpMethod.GET , "/styles/**").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
-                .antMatchers( HttpMethod.GET , "/js/**").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
-                .antMatchers( HttpMethod.GET , "/api/**").hasAuthority(Permission.DEVELOPERS_READ.getPermission())
+                .antMatchers( HttpMethod.GET , "/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                .antMatchers( HttpMethod.GET , "/styles/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                .antMatchers( HttpMethod.GET , "/js/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                .antMatchers( HttpMethod.GET , "/api/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 
-                .antMatchers( HttpMethod.GET , "/**").hasAuthority(Permission.DEVELOPERS_WRITE.getPermission())
-                .antMatchers( HttpMethod.POST , "/**").hasAuthority(Permission.DEVELOPERS_WRITE.getPermission())
-                .antMatchers( HttpMethod.DELETE , "/**").hasAuthority(Permission.DEVELOPERS_WRITE.getPermission())
+                .antMatchers( HttpMethod.GET , "/**").access("hasAnyRole('ROLE_ADMIN')")
+                .antMatchers( HttpMethod.POST , "/**").access("hasAnyRole('ROLE_ADMIN')")
+                .antMatchers( HttpMethod.DELETE , "/**").access("hasAnyRole('ROLE_ADMIN')")
 
 
                 .anyRequest().authenticated()
@@ -62,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth){
         auth.authenticationProvider(daoAuthenticationProvider());
@@ -69,10 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     protected PasswordEncoder passwordEncoder(){
-
         return new BCryptPasswordEncoder(12);
     }
-
 
 
 
@@ -84,8 +85,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
-    @Bean
-    public AuthenticationManager customAuthenticationManager() throws Exception {
-        return authenticationManager();
-    }
 }
